@@ -7,17 +7,19 @@ namespace Lesson
     {
         static void Main(string[] args)
         {
-            FileLogWritter fileLogWritter = new FileLogWritter();
-            ConsoleLogWritter consoleLogWritter = new ConsoleLogWritter();
-            SecureLogWritter secureFileLogWritter = new SecureLogWritter(fileLogWritter);
-            SecureLogWritter secureConsoleLogWritter = new SecureLogWritter(consoleLogWritter);
+            ILogger fileLogWritter = new FileLogWritter();
+            ILogger consoleLogWritter = new ConsoleLogWritter();
+            ILogger secureFileLogWritter = new SecureLogWritter(fileLogWritter);
+            ILogger secureConsoleLogWritter = new SecureLogWritter(consoleLogWritter);
 
-            List<Pathfinder> pathfinders = new List<Pathfinder>();
-            pathfinders.Add(new Pathfinder(fileLogWritter));
-            pathfinders.Add(new Pathfinder(consoleLogWritter));
-            pathfinders.Add(new Pathfinder(secureFileLogWritter));
-            pathfinders.Add(new Pathfinder(secureConsoleLogWritter));
-            pathfinders.Add(new Pathfinder(consoleLogWritter, secureFileLogWritter));
+            List<Pathfinder> pathfinders = new List<Pathfinder>
+            {
+                new Pathfinder(fileLogWritter),
+                new Pathfinder(consoleLogWritter),
+                new Pathfinder(secureFileLogWritter),
+                new Pathfinder(secureConsoleLogWritter),
+                new Pathfinder(consoleLogWritter, secureFileLogWritter)
+            };
 
             string message = "message";
 
