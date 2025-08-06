@@ -1,0 +1,15 @@
+/Users/evelinanoskova/Documents/Code/Logging/bin/Debug/net7.0/Logging
+/Users/evelinanoskova/Documents/Code/Logging/bin/Debug/net7.0/Logging.deps.json
+/Users/evelinanoskova/Documents/Code/Logging/bin/Debug/net7.0/Logging.runtimeconfig.json
+/Users/evelinanoskova/Documents/Code/Logging/bin/Debug/net7.0/Logging.dll
+/Users/evelinanoskova/Documents/Code/Logging/bin/Debug/net7.0/Logging.pdb
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.csproj.AssemblyReference.cache
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.GeneratedMSBuildEditorConfig.editorconfig
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.AssemblyInfoInputs.cache
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.AssemblyInfo.cs
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.csproj.CoreCompileInputs.cache
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.dll
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/refint/Logging.dll
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.pdb
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/Logging.genruntimeconfig.cache
+/Users/evelinanoskova/Documents/Code/Logging/obj/Debug/net7.0/ref/Logging.dll
