@@ -11,6 +11,7 @@ namespace Lesson
             ILogger consoleLogWritter = new ConsoleLogWritter();
             ILogger secureFileLogWritter = new SecureLogWritter(fileLogWritter);
             ILogger secureConsoleLogWritter = new SecureLogWritter(consoleLogWritter);
+            ILogger consoleAndSecureFileLogWritter = new MultipleLogWritter(consoleLogWritter, secureFileLogWritter);
 
             List<Pathfinder> pathfinders = new List<Pathfinder>
             {
@@ -18,7 +19,7 @@ namespace Lesson
                 new Pathfinder(consoleLogWritter),
                 new Pathfinder(secureFileLogWritter),
                 new Pathfinder(secureConsoleLogWritter),
-                new Pathfinder(consoleLogWritter, secureFileLogWritter)
+                new Pathfinder(consoleAndSecureFileLogWritter)
             };
 
             string message = "message";
@@ -35,14 +36,32 @@ namespace Lesson
 
     public class Pathfinder
     {
+        private ILogger _logger;
+
+        public Pathfinder(ILogger logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public void Find(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+                throw new ArgumentException(nameof(message));
+
+            _logger.WriteError(message);
+        }
+    }
+
+    public class MultipleLogWritter : ILogger
+    {
         private IEnumerable<ILogger> _loggers;
 
-        public Pathfinder(params ILogger[] loggers)
+        public MultipleLogWritter(params ILogger[] loggers)
         {
             _loggers = loggers ?? throw new ArgumentNullException(nameof(loggers));
         }
 
-        public void Find(string message)
+        public void WriteError(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException(nameof(message));
@@ -61,7 +80,9 @@ namespace Lesson
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException(nameof(message));
 
-            File.WriteAllText("log.txt", message);
+            string path = "log.txt";
+
+            File.WriteAllText(path, message);
         }
     }
 
@@ -90,7 +111,9 @@ namespace Lesson
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException(nameof(message));
 
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
+            DayOfWeek dayOfLogRecording = DayOfWeek.Friday;
+
+            if (DateTime.Now.DayOfWeek == dayOfLogRecording)
             {
                 _logger.WriteError(message);
             }
