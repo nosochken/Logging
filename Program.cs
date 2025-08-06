@@ -7,18 +7,20 @@ namespace Lesson
     {
         static void Main(string[] args)
         {
-            ILogger fileLogWritter = new FileLogWritter();
-            ILogger consoleLogWritter = new ConsoleLogWritter();
-            ILogger secureFileLogWritter = new SecureLogWritter(fileLogWritter);
-            ILogger secureConsoleLogWritter = new SecureLogWritter(consoleLogWritter);
-            ILogger consoleAndSecureFileLogWriter = new MultipleLogWriter(consoleLogWritter, secureFileLogWritter);
+            string filePath = "log.txt";
+            
+            ILogger fileLogWriter = new FileLogWriter(filePath);
+            ILogger consoleLogWriter = new ConsoleLogWriter();
+            ILogger secureFileLogWritter = new SecureLogWritter(fileLogWriter, DayOfWeek.Friday);
+            ILogger secureConsoleLogWriter = new SecureLogWritter(consoleLogWriter, DayOfWeek.Friday);
+            ILogger consoleAndSecureFileLogWriter = new MultipleLogWriter(consoleLogWriter, secureFileLogWritter);
 
             List<Pathfinder> pathfinders = new List<Pathfinder>
             {
-                new Pathfinder(fileLogWritter),
-                new Pathfinder(consoleLogWritter),
+                new Pathfinder(fileLogWriter),
+                new Pathfinder(consoleLogWriter),
                 new Pathfinder(secureFileLogWritter),
-                new Pathfinder(secureConsoleLogWritter),
+                new Pathfinder(secureConsoleLogWriter),
                 new Pathfinder(consoleAndSecureFileLogWriter)
             };
 
@@ -59,6 +61,12 @@ namespace Lesson
         public MultipleLogWriter(params ILogger[] loggers)
         {
             _loggers = loggers ?? throw new ArgumentNullException(nameof(loggers));
+            
+            foreach (ILogger logger in loggers)
+            {
+                if (logger == null)
+                    throw new ArgumentNullException(nameof(logger));
+            }
         }
 
         public void WriteError(string message)
@@ -73,20 +81,28 @@ namespace Lesson
         }
     }
 
-    public class FileLogWritter : ILogger
+    public class FileLogWriter : ILogger
     {
+        private readonly string  _path;
+        
+        public FileLogWriter(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException(nameof(filePath));
+
+            _path = filePath;
+        }
+        
         public void WriteError(string message)
         {
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException(nameof(message));
 
-            string path = "log.txt";
-
-            File.WriteAllText(path, message);
+            File.WriteAllText(_path, message);
         }
     }
 
-    public class ConsoleLogWritter : ILogger
+    public class ConsoleLogWriter : ILogger
     {
         public void WriteError(string message)
         {
@@ -100,10 +116,14 @@ namespace Lesson
     public class SecureLogWritter : ILogger
     {
         private ILogger _logger;
+        
+        private readonly DayOfWeek _dayOfLogRecording;
 
-        public SecureLogWritter(ILogger logger)
+        public SecureLogWritter(ILogger logger, DayOfWeek dayOfLogRecording)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger)); ;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            _dayOfLogRecording = dayOfLogRecording;
         }
 
         public void WriteError(string message)
@@ -111,9 +131,7 @@ namespace Lesson
             if (string.IsNullOrWhiteSpace(message))
                 throw new ArgumentException(nameof(message));
 
-            DayOfWeek dayOfLogRecording = DayOfWeek.Friday;
-
-            if (DateTime.Now.DayOfWeek == dayOfLogRecording)
+            if (DateTime.Now.DayOfWeek == _dayOfLogRecording)
             {
                 _logger.WriteError(message);
             }
