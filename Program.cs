@@ -17,7 +17,7 @@ namespace Lesson
             pathfinders.Add(new Pathfinder(consoleLogWritter));
             pathfinders.Add(new Pathfinder(secureFileLogWritter));
             pathfinders.Add(new Pathfinder(secureConsoleLogWritter));
-            pathfinders.Add(new Pathfinder(secureFileLogWritter, secureConsoleLogWritter));
+            pathfinders.Add(new Pathfinder(consoleLogWritter, secureFileLogWritter));
 
             string message = "message";
 
