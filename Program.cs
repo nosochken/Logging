@@ -11,7 +11,7 @@ namespace Lesson
             ILogger consoleLogWritter = new ConsoleLogWritter();
             ILogger secureFileLogWritter = new SecureLogWritter(fileLogWritter);
             ILogger secureConsoleLogWritter = new SecureLogWritter(consoleLogWritter);
-            ILogger consoleAndSecureFileLogWritter = new MultipleLogWritter(consoleLogWritter, secureFileLogWritter);
+            ILogger consoleAndSecureFileLogWriter = new MultipleLogWriter(consoleLogWritter, secureFileLogWritter);
 
             List<Pathfinder> pathfinders = new List<Pathfinder>
             {
@@ -19,7 +19,7 @@ namespace Lesson
                 new Pathfinder(consoleLogWritter),
                 new Pathfinder(secureFileLogWritter),
                 new Pathfinder(secureConsoleLogWritter),
-                new Pathfinder(consoleAndSecureFileLogWritter)
+                new Pathfinder(consoleAndSecureFileLogWriter)
             };
 
             string message = "message";
@@ -52,11 +52,11 @@ namespace Lesson
         }
     }
 
-    public class MultipleLogWritter : ILogger
+    public class MultipleLogWriter : ILogger
     {
         private IEnumerable<ILogger> _loggers;
 
-        public MultipleLogWritter(params ILogger[] loggers)
+        public MultipleLogWriter(params ILogger[] loggers)
         {
             _loggers = loggers ?? throw new ArgumentNullException(nameof(loggers));
         }
